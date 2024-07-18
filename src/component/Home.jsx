@@ -91,18 +91,46 @@ function Home() {
         try {
             const openAIResult = await callOpenAI(thread);
             const parsedResult = JSON.parse(openAIResult);
+            
+            let newResults = [];
+    
             if (Array.isArray(parsedResult.greetings)) {
-                setResult(parsedResult.greetings);
+                // מקרה של מערך של אובייקטים
+                newResults = parsedResult.greetings;
+            } else if (typeof parsedResult.greetings === 'object') {
+                // מקרה של אובייקט של מערכים
+                newResults = Object.values(parsedResult.greetings);
+            } else if (parsedResult.greeting1) {
+                // מקרה של אובייקט עם greeting1, greeting2, greeting3
+                newResults = [
+                    parsedResult.greeting1,
+                    parsedResult.greeting2,
+                    parsedResult.greeting3
+                ].filter(Boolean); // מסיר ערכים ריקים או null
             } else {
-                setResult([parsedResult.greeting || openAIResult]);
+                // מקרה לא צפוי
+                newResults = [JSON.stringify(parsedResult)];
             }
-            } catch (error) {
+    
+            // וודאי שכל איבר במערך הוא אובייקט עם שדה 'message'
+            newResults = newResults.map(greeting => {
+                if (typeof greeting === 'string') {
+                    return { message: greeting };
+                } else if (typeof greeting === 'object' && greeting.message) {
+                    return greeting;
+                } else {
+                    return { message: JSON.stringify(greeting) };
+                }
+            });
+    
+            setResult(newResults);
+        } catch (error) {
             console.error("error in handeleSearchBlessing", error);
-            setResult(["ארעה שגיאה בעת הפניה ל OpenAI"])
+            setResult([{ message: "ארעה שגיאה בעת הפניה ל OpenAI" }]);
         } finally {
             setIsLoading(false);
         }
-
+    
     };
 
     const handleNextGreeting = () => {
