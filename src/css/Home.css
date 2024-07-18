@@ -1,0 +1,217 @@
+body {
+    font-family: 'Heebo', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+}
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.blessing-container {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.blessing-container.result-view {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    color: #3f51b5;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+.note {
+    color: #56619d;
+    text-align: right;
+    margin-bottom: 30px;
+    font-size: 0.75rem;
+}
+
+.form-control {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.input-label {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.select, .text-field {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+.text-field:focus, .select:focus {
+    outline: none;
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
+
+.input-fields.compact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-fields.compact .form-control {
+    flex: 1 1 200px;
+    max-width: 200px;
+}
+
+.input-fields.compact .input-label {
+    font-size: 0.9rem;
+}
+
+.input-fields.compact .select,
+.input-fields.compact .text-field {
+    font-size: 0.9rem;
+    padding: 5px;
+}
+
+.input-fields.compact .note {
+    display: none;
+}
+
+.search-button {
+    background-color: #3f51b5 !important;
+    color: white !important;
+    margin-top: 20px !important;
+    width: 100%;
+    font-size: 1.1rem !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.search-button:hover {
+    background-color: #303f9f !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+.input-fields.compact .search-button {
+    width: auto;
+    margin-top: 0 !important;
+}
+
+.next-button {
+    background-color: white !important;
+    color: #f50057 !important;
+    border: 1px solid #f50057 !important;
+    margin-top: 10px !important;
+    font-size: 1rem !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.next-button:hover {
+    background-color: rgba(245, 0, 87, 0.04) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 3px 10px rgba(245, 0, 87, 0.2) !important;
+}
+
+.greeting-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.greeting-result {
+    background-color: #f0f4f8;
+    border-radius: 10px;
+    border-left: 5px solid #3f51b5;
+    padding: 30px;
+    margin: 20px 0;
+    width: 100%;
+    white-space: pre-wrap;
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.next-button {
+    margin-top: 20px;
+}
+@media (max-width: 768px) {
+    .blessing-container,
+    .greeting-container {
+        max-width: 95%;
+    }
+
+    .greeting-result {
+        font-size: 1rem;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .blessing-container {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+
+    .input-fields.compact .form-control {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}

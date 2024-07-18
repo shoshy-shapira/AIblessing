@@ -1,0 +1,136 @@
+
+import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button } from '@mui/base';
+import callOpenAI from '../js.js';
+
+const types = [
+    { id: 10, name: 'יומהולדת' },
+    { id: 20, name: 'חתונה' },
+    { id: 30, name: 'בר מצווה' },
+    { id: 40, name: 'יום נישואין' },
+    { id: 50, name: 'בת מצווה' },
+    { id: 60, name: 'מורה' },
+    { id: 70, name: 'לידה' },
+];
+const typesTeacher = [
+    { id: 10, name: 'פורים' },
+    { id: 20, name: 'פסח' },
+    { id: 30, name: 'סוף שנה ' },
+    { id: 40, name: 'ראש השנה' },
+];
+
+
+function Home() {
+    const [type, setType] = useState('');
+    const [showAgeField, setShowAgeField] = useState(false);
+    const [showTypesTeacher, setshowTypesTeacher] = useState(false);
+    const [result, setResult] = useState('');
+    const [teacher, setTeacher] = useState('');
+
+    const handleChange = (event) => {
+        const selectedValue = event.target.value;
+        setType(selectedValue);
+
+        setShowAgeField(event.target.value === 10);
+        setshowTypesTeacher(event.target.value === 60);
+        setTeacher('');//אתחול מורה
+    };
+
+    //עדכון של סוג מורה
+    const handleTeacherChange = (event) => {
+        const selectedTeacher = event.target.value;
+        setTeacher(selectedTeacher);
+    };
+
+
+
+    const handeleSearchBlessing = async () => {
+        if (!type) {
+            alert('בבקשה בחר סוג ברכה');
+            return;
+        }
+
+        const selectType = types.find((t) => t.id === parseInt(type, 10)).name;
+        const blessingType = document.getElementById('outlined-basic').value;
+        const atmosphere = document.getElementById('filled-basic').value;
+        const age = showAgeField ? document.getElementById('outlined-number').value : '';
+        let teacherType = '';
+        if (showTypesTeacher && teacher) {//בודק אם בחרו מורה
+            teacherType = typesTeacher.find((t) = t.id === parseInt(teacher, 10)).name;
+        }
+        let thread = `כתוב לי ברכה שכתובה בצורה יפה מאוד וברמה גבוהה עבור ${selectType} שתהיה ב ${blessingType} באוירה ${atmosphere}`;
+        if (age) {
+            thread += ` לגיל ${age}`;
+        }
+        if (teacherType) {
+            thread += ` ל ${teacherType}`;
+        }
+
+        try {
+            const openAIResult = await callOpenAI(thread);
+            const parsedResult = JSON.parse(openAIResult);
+            setResult(parsedResult.greeting || openAIResult);        } catch (error) {
+            console.error("error in handeleSearchBlessing", error);
+            setResult("ארעה שגיאה בעת הפניה ל OpenAI")
+        }
+    }
+    return (
+        <>
+            <Box>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">אני רוצה את הברכה עבור</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select type"
+                        value={type}
+                        onChange={handleChange}
+                        required
+                    >
+                        {types.map((t) =>
+                            <MenuItem key={t.id} value={t.id}>
+                                {t.name}
+                            </MenuItem>)}
+                    </Select>
+
+                    {showTypesTeacher && (
+                        <>
+                            <InputLabel InputLabel id="demo-simple-select-label">לכבוד</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select typesTeacher"
+                                value={teacher}
+                                onChange={handleTeacherChange}
+                                required
+                            >
+                                {typesTeacher.map((t) =>
+                                    <MenuItem key={t.id} value={t.id}>
+                                        {t.name}
+                                    </MenuItem>)}
+                            </Select>
+                        </>
+                    )}
+
+
+                    {showAgeField && (
+                        <TextField
+                            id="outlined-number"
+                            label="גיל"
+                            type="number"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    )}
+
+                </FormControl>
+                <TextField id="outlined-basic" label="סוג הברכה" variant="outlined" />
+                <TextField id="filled-basic" label="אוירה" variant="filled" />
+            </Box>
+            <Button variant="contained" onClick={handeleSearchBlessing}>חפש</Button>
+            {result && <div>{result}</div>}
+        </>
+    )
+}
+
+export default Home;
+
