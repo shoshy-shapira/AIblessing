@@ -228,7 +228,7 @@ function Home() {
                         disabled={currentGreetingIndex>=result.length-1}//בסוף הכפתור יושבת
                     >
                         
-                        {currentGreetingIndex < result.length - 1 ? 'הברכה הבאה' : 'חזור לברכה הראשונה'}
+                        {currentGreetingIndex < result.length - 1 ? ' <= הברכה הבאה' : 'סיימנו :)'}
                     </Button>)}
                 </div>
                 )}
